@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div
+      id="container"
+      style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px"
+    ></div>
+  </body>
+</html>
+
+<script>
+  function Get_Data_From_Server() {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        cardList(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  Get_Data_From_Server();
+
+  function createDiv(id, image, title, price, category, description) {
+    let Single_div = `
+    <div style="text-align: center;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; ">
+        <p>${id}</p>
+        <img src=${image} height="300" alt="">
+        <h3>${title}</h3>
+        <h3>${price}</h3>
+        <h3>${category}</h3>
+        <p>${description}</p>
+      </div>
+    `;
+
+    return Single_div;
+  }
+
+  function cardList(data) {
+    const cardsData = data.map((elem) =>
+      createDiv(
+        elem.id,
+        elem.image,
+        elem.title,
+        elem.price,
+        elem.category,
+        elem.description
+      )
+    );
+
+    document.getElementById("container").innerHTML = cardsData.join("");
+  }
+</script>
